@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dog Emotion Detector</title>
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-badge">
+      <svg class="icon icon-sm" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <ellipse cx="12" cy="15.5" rx="5.3" ry="4.4"/>
+        <circle cx="5.8" cy="9.2" r="2.1"/>
+        <circle cx="9.6" cy="5.8" r="2.1"/>
+        <circle cx="14.4" cy="5.8" r="2.1"/>
+        <circle cx="18.2" cy="9.2" r="2.1"/>
+      </svg>
+      <span>AI Dog Emotion Detector</span>
+    </div>
+    <h1>หมาของคุณกำลังรู้สึกยังไง?</h1>
+    <p class="subtitle">อัปโหลดรูปสุนัขของคุณ แล้วให้ AI ทายอารมณ์ — สุขใจ หรือ หงุดหงิด</p>
+  </header>
+
+  <main class="card">
+    <div id="dropzone" class="dropzone">
+      <input type="file" id="fileInput" accept="image/*" hidden />
+      <div id="dropzoneContent" class="dropzone-content">
+        <svg class="icon paw-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <ellipse cx="12" cy="15.5" rx="5.3" ry="4.4"/>
+          <circle cx="5.8" cy="9.2" r="2.1"/>
+          <circle cx="9.6" cy="5.8" r="2.1"/>
+          <circle cx="14.4" cy="5.8" r="2.1"/>
+          <circle cx="18.2" cy="9.2" r="2.1"/>
+        </svg>
+        <p class="dz-title">ลากรูปมาวาง หรือคลิกเพื่อเลือกรูป</p>
+        <p class="dz-hint">รองรับ JPG, PNG — ควรเป็นรูปหน้าสุนัขชัด ๆ</p>
+        <button type="button" class="btn-primary" id="browseBtn">เลือกรูปภาพ</button>
+      </div>
+      <img id="previewImg" class="preview-img" hidden />
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-primary" id="analyzeBtn" disabled>
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5"/>
+          <line x1="20" y1="20" x2="15.3" y2="15.3"/>
+        </svg>
+        <span>วิเคราะห์อารมณ์</span>
+      </button>
+      <button type="button" class="btn-ghost" id="resetBtn" hidden>
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+          <path d="M21 3v5h-5"/>
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          <path d="M3 21v-5h5"/>
+        </svg>
+        <span>เลือกรูปใหม่</span>
+      </button>
+    </div>
+
+    <div id="loading" class="loading" hidden>
+      <div class="spinner"></div>
+      <p>กำลังวิเคราะห์สีหน้าน้องหมา...</p>
+    </div>
+
+    <div id="errorBox" class="error-box" hidden></div>
+
+    <section id="result" class="result" hidden>
+      <div class="result-top">
+        <div id="resultEmoji" class="result-icon"></div>
+        <div>
+          <h2 id="resultLabel" class="result-label">Happy</h2>
+          <p id="resultMessage" class="result-message"></p>
+        </div>
+      </div>
+
+      <div class="bars">
+        <div class="bar-row">
+          <span class="bar-name icon-yellow">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.2"/>
+              <circle cx="8.7" cy="10.2" r="1" fill="currentColor" stroke="none"/>
+              <circle cx="15.3" cy="10.2" r="1" fill="currentColor" stroke="none"/>
+              <path d="M7.8 14.2c1 1.6 2.6 2.5 4.2 2.5s3.2-.9 4.2-2.5"/>
+            </svg>
+            Happy
+          </span>
+          <div class="bar-track"><div id="barHappy" class="bar-fill bar-happy"></div></div>
+          <span id="pctHappy" class="bar-pct">0%</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-name icon-red">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.2"/>
+              <circle cx="8.7" cy="10.6" r="1" fill="currentColor" stroke="none"/>
+              <circle cx="15.3" cy="10.6" r="1" fill="currentColor" stroke="none"/>
+              <path d="M7 8.6l3 1.4M17 8.6l-3 1.4"/>
+              <path d="M8 16.6c1-1.2 2.4-1.8 4-1.8s3 .6 4 1.8"/>
+            </svg>
+            Angry
+          </span>
+          <div class="bar-track"><div id="barAngry" class="bar-fill bar-angry"></div></div>
+          <span id="pctAngry" class="bar-pct">0%</span>
+        </div>
+      </div>
+
+      <div class="tips">
+        <h3>คำแนะนำสำหรับคุณ</h3>
+        <ul id="tipsList"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>โมเดล MobileNetV2 fine-tuned สำหรับจำแนกอารมณ์สุนัข</p>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
