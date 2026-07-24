@@ -8,19 +8,20 @@ const resetBtn = document.getElementById("resetBtn");
 const loading = document.getElementById("loading");
 const errorBox = document.getElementById("errorBox");
 const result = document.getElementById("result");
+const mascotAssistant = document.getElementById("mascotAssistant");
 const mascotImg = document.getElementById("mascotImg");
 const mascotBubble = document.getElementById("mascotBubble");
 
 const MASCOT_STATES = {
-  normal: { src: "/static/mascot-normal.jpeg", cls: "", text: "สวัสดี! อัปโหลดรูปน้องหมาได้เลย" },
-  happy: { src: "/static/mascot-happy.jpg", cls: "is-happy", text: "น้องอารมณ์ดีมากเลย ดีใจด้วยนะ!" },
-  angry: { src: "/static/mascot-angry.jpg", cls: "is-angry", text: "น้องดูไม่ค่อยพอใจ ลองดูคำแนะนำนะ" },
+  normal: { src: "/static/mascot-normal.png", cls: "", text: "สวัสดี! อัปโหลดรูปน้องหมาแล้วกดวิเคราะห์ได้เลย" },
+  happy: { src: "/static/mascot-happy.png", cls: "is-happy", text: "น้องอารมณ์ดีมากเลย ดีใจด้วยนะ!" },
+  angry: { src: "/static/mascot-angry.png", cls: "is-angry", text: "น้องดูไม่ค่อยพอใจ ลองดูคำแนะนำนะ" },
 };
 
 function setMascot(state) {
   const m = MASCOT_STATES[state] || MASCOT_STATES.normal;
   mascotImg.src = m.src;
-  mascotImg.className = "mascot-img " + m.cls;
+  if (mascotAssistant) mascotAssistant.className = "mascot-assistant " + m.cls;
   // re-trigger the pop animation on every change
   mascotImg.style.animation = "none";
   void mascotImg.offsetWidth;
