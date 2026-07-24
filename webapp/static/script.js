@@ -8,6 +8,25 @@ const resetBtn = document.getElementById("resetBtn");
 const loading = document.getElementById("loading");
 const errorBox = document.getElementById("errorBox");
 const result = document.getElementById("result");
+const mascotImg = document.getElementById("mascotImg");
+const mascotBubble = document.getElementById("mascotBubble");
+
+const MASCOT_STATES = {
+  normal: { src: "/static/mascot-normal.jpeg", cls: "", text: "สวัสดี! อัปโหลดรูปน้องหมาได้เลย" },
+  happy: { src: "/static/mascot-happy.jpg", cls: "is-happy", text: "น้องอารมณ์ดีมากเลย ดีใจด้วยนะ!" },
+  angry: { src: "/static/mascot-angry.jpg", cls: "is-angry", text: "น้องดูไม่ค่อยพอใจ ลองดูคำแนะนำนะ" },
+};
+
+function setMascot(state) {
+  const m = MASCOT_STATES[state] || MASCOT_STATES.normal;
+  mascotImg.src = m.src;
+  mascotImg.className = "mascot-img " + m.cls;
+  // re-trigger the pop animation on every change
+  mascotImg.style.animation = "none";
+  void mascotImg.offsetWidth;
+  mascotImg.style.animation = "";
+  if (mascotBubble) mascotBubble.textContent = m.text;
+}
 
 let selectedFile = null;
 
@@ -71,6 +90,7 @@ resetBtn.addEventListener("click", (e) => {
   resetBtn.hidden = true;
   result.hidden = true;
   clearError();
+  setMascot("normal");
 });
 
 analyzeBtn.addEventListener("click", async () => {
@@ -124,6 +144,9 @@ function renderResult(data) {
 
   const happyPct = Math.round((data.probabilities.happy || 0) * 100);
   const angryPct = Math.round((data.probabilities.angry || 0) * 100);
+
+  // pick mascot: tie (50/50) -> normal, otherwise follow the winning emotion
+  setMascot(happyPct === angryPct ? "normal" : data.label);
 
   document.getElementById("pctHappy").textContent = happyPct + "%";
   document.getElementById("pctAngry").textContent = angryPct + "%";

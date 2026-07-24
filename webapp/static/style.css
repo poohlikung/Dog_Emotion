@@ -267,32 +267,70 @@ body {
 .bar-pct { font-size: 0.85rem; font-weight: 800; text-align: right; }
 
 .tips {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
   background: var(--egg);
   border: 2px solid var(--ink);
   border-radius: 14px;
   padding: 16px 18px;
 }
-.tips-mascot {
-  width: 104px;
-  height: auto;
-  flex-shrink: 0;
-  align-self: flex-end;
-  margin-bottom: -16px; /* let the mascot sit on the bottom edge of the card */
-  transform: scaleX(-1); /* flip so the pointing paw aims toward the advice */
-  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.18));
-  animation: mascot-pop 0.5s ease-out both;
-}
-.tips-body { flex: 1; min-width: 0; }
 .tips h3 { margin: 0 0 8px; font-size: 1rem; font-weight: 800; }
 .tips ul { margin: 0; padding-left: 20px; font-size: 0.92rem; line-height: 1.6; }
 
+/* In-card helper mascot — reacts to the prediction */
+.mascot-assistant {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+.mascot-bubble {
+  flex: 1;
+  background: var(--egg);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--ink);
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+  position: relative;
+}
+.mascot-bubble::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  background: var(--egg);
+  border-left: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+}
+.mascot-img {
+  width: 74px;
+  height: 74px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--surface);
+  animation: mascot-pop 0.4s ease-out;
+}
+.mascot-img.is-happy { border-color: var(--yellow); }
+.mascot-img.is-angry { border-color: var(--red); }
+
 @keyframes mascot-pop {
-  from { opacity: 0; transform: scaleX(-1) translateY(14px); }
-  to   { opacity: 1; transform: scaleX(-1) translateY(0); }
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .mascot-assistant { gap: 10px; margin-top: 18px; }
+  .mascot-img { width: 60px; height: 60px; }
+  .mascot-bubble { font-size: 0.8rem; padding: 8px 12px; }
 }
 
 .footer {
