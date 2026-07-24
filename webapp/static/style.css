@@ -1,3 +1,25 @@
+@font-face {
+  font-family: "iannnnn-DOG";
+  src: url("/static/iannnnn-DOG-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "iannnnn-DOG";
+  src: url("/static/iannnnn-DOG-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "iannnnn-DOG";
+  src: url("/static/iannnnn-DOG-Bold.ttf") format("truetype");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --egg: #f6efd9;
   --surface: #fffcf3;
@@ -16,7 +38,7 @@ body {
   min-height: 100vh;
   background: var(--egg);
   color: var(--ink);
-  font-family: "Segoe UI", "Noto Sans Thai", system-ui, -apple-system, sans-serif;
+  font-family: "iannnnn-DOG", "Noto Sans Thai", "Segoe UI", system-ui, -apple-system, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,6 +160,7 @@ body {
 
 .btn-primary,
 .btn-ghost {
+  font-family: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
