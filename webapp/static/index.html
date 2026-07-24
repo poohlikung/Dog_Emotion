@@ -124,6 +124,88 @@
     </div>
   </main>
 
+  <aside class="trend-panel" id="trendPanel" hidden>
+    <h2 class="trend-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 3v18h18"/>
+        <path d="M7 14l3.5-3.5 3 3L21 7"/>
+        <path d="M21 11V7h-4"/>
+      </svg>
+      แนวโน้มอารมณ์
+    </h2>
+
+    <p class="trend-empty" id="trendEmpty">ยังไม่มีประวัติ ลองวิเคราะห์รูปน้องหมาดูสิ แล้วผลจะมาสะสมตรงนี้</p>
+
+    <div class="trend-body" id="trendBody" hidden>
+      <div class="trend-majority" id="trendMajority">
+        <span class="trend-majority-icon" id="trendMajorityIcon"></span>
+        <div>
+          <span class="trend-majority-label" id="trendMajorityLabel">—</span>
+          <span class="trend-majority-sub">อารมณ์ที่พบบ่อยที่สุด</span>
+        </div>
+      </div>
+
+      <div class="trend-bars">
+        <div class="trend-row">
+          <span class="trend-name icon-yellow">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.2"/>
+              <circle cx="8.7" cy="10.2" r="1" fill="currentColor" stroke="none"/>
+              <circle cx="15.3" cy="10.2" r="1" fill="currentColor" stroke="none"/>
+              <path d="M7.8 14.2c1 1.6 2.6 2.5 4.2 2.5s3.2-.9 4.2-2.5"/>
+            </svg>
+            Happy
+          </span>
+          <div class="trend-track"><div id="trendBarHappy" class="trend-fill bar-happy"></div></div>
+          <span id="trendCountHappy" class="trend-count">0</span>
+        </div>
+        <div class="trend-row">
+          <span class="trend-name icon-red">
+            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9.2"/>
+              <circle cx="8.7" cy="10.6" r="1" fill="currentColor" stroke="none"/>
+              <circle cx="15.3" cy="10.6" r="1" fill="currentColor" stroke="none"/>
+              <path d="M7 8.6l3 1.4M17 8.6l-3 1.4"/>
+              <path d="M8 16.6c1-1.2 2.4-1.8 4-1.8s3 .6 4 1.8"/>
+            </svg>
+            Angry
+          </span>
+          <div class="trend-track"><div id="trendBarAngry" class="trend-fill bar-angry"></div></div>
+          <span id="trendCountAngry" class="trend-count">0</span>
+        </div>
+      </div>
+
+      <p class="trend-total">ทำนายไปแล้ว <strong id="trendTotal">0</strong> ครั้ง</p>
+
+      <button type="button" class="trend-forget" id="forgetBtn">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h18"/>
+          <path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/>
+          <path d="M6 6l1 14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-14"/>
+        </svg>
+        ลบประวัติ
+      </button>
+    </div>
+  </aside>
+
+  <div class="consent-box" id="consentBox" hidden role="dialog" aria-label="ขอความยินยอมเก็บประวัติ">
+    <div class="consent-head">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2a10 10 0 1 0 10 10 3 3 0 0 1-4-4 3 3 0 0 1-3-3 3 3 0 0 0-3-3z"/>
+        <circle cx="8.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/>
+        <circle cx="9" cy="15" r="1.1" fill="currentColor" stroke="none"/>
+        <circle cx="14" cy="14.5" r="1.1" fill="currentColor" stroke="none"/>
+        <circle cx="14.5" cy="9.5" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>เก็บประวัติการทำนายไหม?</span>
+    </div>
+    <p class="consent-text">อนุญาตให้เว็บจำผลการทำนายไว้ในเบราว์เซอร์ของคุณ (คุกกี้) เพื่อดูแนวโน้มอารมณ์น้องหมาเมื่อกลับมาอีกครั้ง</p>
+    <div class="consent-actions">
+      <button type="button" class="btn-primary consent-btn" id="consentAccept">ยอมรับ</button>
+      <button type="button" class="btn-ghost consent-btn" id="consentDecline">ไม่ ขอบคุณ</button>
+    </div>
+  </div>
+
   <footer class="footer">
     <p>โปรเจควิชา CP351101 Computational Science — Made by poohlikung</p>
   </footer>

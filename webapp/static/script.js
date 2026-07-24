@@ -166,4 +166,106 @@ function renderResult(data) {
     document.getElementById("barHappy").style.width = happyPct + "%";
     document.getElementById("barAngry").style.width = angryPct + "%";
   });
+
+  // if the visitor consented, the backend returns their updated tally
+  if (data.history) renderTrend(data.history);
 }
+
+/* ---- History: consent + trend panel ----------------------------------- */
+const CONSENT_KEY = "dogConsent"; // "accepted" | "declined" (undecided = absent)
+const trendPanel = document.getElementById("trendPanel");
+const trendEmpty = document.getElementById("trendEmpty");
+const trendBody = document.getElementById("trendBody");
+const consentBox = document.getElementById("consentBox");
+
+const MAJORITY_META = {
+  happy: { label: "Happy", cls: "is-happy", icon: FACE_ICONS.happy },
+  angry: { label: "Angry", cls: "is-angry", icon: FACE_ICONS.angry },
+  tie: {
+    label: "ก้ำกึ่ง",
+    cls: "is-tie",
+    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9.2"/>
+      <circle cx="8.7" cy="10.4" r="1" fill="currentColor" stroke="none"/>
+      <circle cx="15.3" cy="10.4" r="1" fill="currentColor" stroke="none"/>
+      <path d="M8 15h8"/>
+    </svg>`,
+  },
+};
+
+function renderTrend(history) {
+  trendPanel.hidden = false;
+  if (!history || history.total === 0) {
+    trendEmpty.hidden = false;
+    trendBody.hidden = true;
+    return;
+  }
+  trendEmpty.hidden = true;
+  trendBody.hidden = false;
+
+  const meta = MAJORITY_META[history.majority] || MAJORITY_META.tie;
+  const iconEl = document.getElementById("trendMajorityIcon");
+  iconEl.className = "trend-majority-icon " + meta.cls;
+  iconEl.innerHTML = meta.icon;
+  document.getElementById("trendMajorityLabel").textContent = meta.label;
+
+  document.getElementById("trendCountHappy").textContent = history.happy;
+  document.getElementById("trendCountAngry").textContent = history.angry;
+  document.getElementById("trendTotal").textContent = history.total;
+
+  const happyPct = history.total ? (history.happy / history.total) * 100 : 0;
+  const angryPct = history.total ? (history.angry / history.total) * 100 : 0;
+  requestAnimationFrame(() => {
+    document.getElementById("trendBarHappy").style.width = happyPct + "%";
+    document.getElementById("trendBarAngry").style.width = angryPct + "%";
+  });
+}
+
+async function initHistory() {
+  let state = null;
+  try {
+    const res = await fetch("/api/history");
+    state = await res.json();
+  } catch (_) {
+    return; // backend unreachable — just skip the feature quietly
+  }
+
+  if (state && state.consent) {
+    // returning visitor with a valid cookie — show their trend right away
+    renderTrend(state.history);
+    consentBox.hidden = true;
+  } else if (localStorage.getItem(CONSENT_KEY) !== "declined") {
+    // undecided — ask for permission before storing anything
+    consentBox.hidden = false;
+  }
+}
+
+document.getElementById("consentAccept").addEventListener("click", async () => {
+  try {
+    const res = await fetch("/api/consent", { method: "POST" });
+    const data = await res.json();
+    localStorage.setItem(CONSENT_KEY, "accepted");
+    consentBox.hidden = true;
+    renderTrend(data.history);
+  } catch (_) {
+    showError("เปิดการเก็บประวัติไม่สำเร็จ ลองใหม่อีกครั้ง");
+  }
+});
+
+document.getElementById("consentDecline").addEventListener("click", () => {
+  localStorage.setItem(CONSENT_KEY, "declined");
+  consentBox.hidden = true;
+});
+
+document.getElementById("forgetBtn").addEventListener("click", async () => {
+  try {
+    await fetch("/api/consent", { method: "DELETE" });
+  } catch (_) {
+    /* ignore */
+  }
+  localStorage.removeItem(CONSENT_KEY);
+  trendPanel.hidden = true;
+  consentBox.hidden = false; // offer to opt back in
+});
+
+initHistory();
