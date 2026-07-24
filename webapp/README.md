@@ -11,7 +11,7 @@ pinned: false
 # Dog Emotion Detector 🐾
 
 A small web app that guesses whether a dog in a photo looks **happy** or **angry**,
-using a MobileNetV2 model fine-tuned on the `Test/angry` and `Test/happy` image sets
+using a MobileNetV2 model fine-tuned on the `Train/angry` and `Train/happy` image sets
 from this repo.
 
 ## Local development
@@ -20,7 +20,7 @@ from this repo.
 cd webapp
 pip install -r requirements.txt
 
-# (only needed once, or to retrain) — trains on ../Test and writes backend/model.pt
+# (only needed once, or to retrain) — trains on ../Train and writes backend/model.pt
 python3 backend/train.py
 
 uvicorn backend.app:app --reload --port 8000

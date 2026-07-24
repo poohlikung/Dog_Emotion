@@ -3,8 +3,8 @@ Trains the dog-emotion classifier (angry vs happy) with transfer learning
 on top of a MobileNetV2 backbone pretrained on ImageNet.
 
 Data layout expected (relative to repo root):
-    Test/angry/*.jpg
-    Test/happy/*.jpg
+    Train/angry/*.jpg
+    Train/happy/*.jpg
 
 Usage:
     python3 backend/train.py
@@ -19,7 +19,7 @@ from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, models, transforms
 
 ROOT = Path(__file__).resolve().parent.parent.parent
-DATA_DIR = ROOT / "Test"
+DATA_DIR = ROOT / "Train"
 OUT_PATH = Path(__file__).resolve().parent / "model.pt"
 CLASSES = ["angry", "happy"]  # alphabetical, matches ImageFolder ordering
 IMG_SIZE = 160
