@@ -25,6 +25,38 @@ body {
 
 [hidden] { display: none !important; }
 
+.github-link {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.github-link svg { width: 26px; height: 26px; }
+.github-link:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.github-link:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+@media (max-width: 480px) {
+  .github-link { width: 40px; height: 40px; top: 12px; right: 12px; }
+  .github-link svg { width: 22px; height: 22px; }
+}
+
 .icon { width: 24px; height: 24px; flex-shrink: 0; }
 .icon-sm { width: 18px; height: 18px; }
 
